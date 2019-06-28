@@ -1,8 +1,8 @@
-using Documenter, FeedbackConvNets
+using Documenter#, FeedbackConvNets
 
 makedocs(
     sitename = "FeedbackConvNets Documentation",
-    modules = [FeedbackConvNets],
+    #modules = [FeedbackConvNets],
     pages = [
         "Home" => "index.md"
     ]
