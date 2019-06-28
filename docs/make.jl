@@ -7,3 +7,7 @@ makedocs(
         "Home" => "index.md"
     ]
 )
+
+deploydocs(
+    repo = "github.com/cJarvers/FeedbackNets.jl.git"
+)
