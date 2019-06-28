@@ -6,6 +6,8 @@ used in evaluations and examples.
 """
 module ModelFactory
 using Flux
+using ..Splitters
+using ..Mergers
 using ..FeedbackChains
 
 export basenetparams, featnetparams, kernnetparams, slimnetparams, largenetparams
