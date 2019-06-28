@@ -2,6 +2,8 @@
 
 Deep and convolutional neural networks with feedback operations in Flux.
 
+![MIT license badge](https://img.shields.io/badge/license-MIT-green.svg)
+
 ## Description
 
 This package implements deep neural networks with feedback. This means that the
