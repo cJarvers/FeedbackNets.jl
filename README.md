@@ -4,7 +4,7 @@ Deep and convolutional neural networks with feedback operations in Flux.
 
 ![MIT license badge](https://img.shields.io/badge/license-MIT-green.svg)
 [![Build Status](https://travis-ci.org/cJarvers/FeedbackNets.jl.svg?branch=master)](https://travis-ci.org/cJarvers/FeedbackNets.jl)
-![](https://img.shields.io/badge/docs-stable-blue.svg)](https://USER_NAME.github.io/PACKAGE_NAME.jl/stable)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://cJarvers.github.io/FeedbackNets.jl/stable)
 
 ## Description
 
