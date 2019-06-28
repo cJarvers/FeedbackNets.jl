@@ -5,6 +5,9 @@ makedocs(
     #modules = [FeedbackConvNets],
     pages = [
         "Home" => "index.md"
+        "Guide" => [
+            "Getting Started" => "guide/getting_started.md"
+        ]
     ]
 )
 
