@@ -112,10 +112,10 @@ uuid = "3a865a2d-5b23-5a0f-bc46-62713ec82fae"
 version = "1.0.2"
 
 [[DataDeps]]
-deps = ["DelimitedFiles", "HTTP", "Reexport", "SHA", "Test"]
-git-tree-sha1 = "446eb89694d774bc55adcfec0ed0f85efda8857f"
+deps = ["HTTP", "Reexport", "SHA"]
+git-tree-sha1 = "3fecf920ad9702f015a5ab198b233b4c1c50992a"
 uuid = "124859b0-ceae-595e-8997-d05f6a7a8dfe"
-version = "0.6.2"
+version = "0.6.4"
 
 [[DataStructures]]
 deps = ["InteractiveUtils", "OrderedCollections", "Random", "Serialization", "Test"]
@@ -203,9 +203,9 @@ version = "0.5.0"
 
 [[HTTP]]
 deps = ["Base64", "Dates", "IniFile", "MbedTLS", "Sockets"]
-git-tree-sha1 = "854fad2a2b9cc6678f70ed15a65fc7e572056d39"
+git-tree-sha1 = "6e59e7ec3c71eda9e0261c98896da5d3d008fa7d"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
-version = "0.8.2"
+version = "0.8.3"
 
 [[IniFile]]
 deps = ["Test"]
