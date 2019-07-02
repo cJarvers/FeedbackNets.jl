@@ -11,7 +11,7 @@ An element in a `FeedbackChain` in which the forward stream and feedback stream
 are combined according to an operation `op`.
 
 # Fields
-- `forkname::String`: name of the `Splitter` node from which the feedback is taken
+- `splitname::String`: name of the `Splitter` node from which the feedback is taken
 - `fb::F`: feedback branch
 - `op::O`: operation to combine forward and feedback branches
 
@@ -32,6 +32,6 @@ function (m::Merger)(x, y)
 end
 
 children(m::Merger) = (m.fb, m.op)
-mapchildren(f, m::Merger) = Merger(m.forkname, f(m.fb), m.op)
+mapchildren(f, m::Merger) = Merger(m.splitname, f(m.fb), m.op)
 
 end # module Mergers
