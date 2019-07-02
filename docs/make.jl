@@ -6,7 +6,8 @@ makedocs(
     pages = [
         "Home" => "index.md"
         "Guide" => [
-            "Getting Started" => "guide/getting_started.md"
+            "Getting Started" => "guide/getting_started.md",
+            "Chains vs Trees" => "guide/chains_vs_trees.md"
         ]
     ]
 )
