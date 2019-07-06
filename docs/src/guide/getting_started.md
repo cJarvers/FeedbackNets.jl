@@ -12,13 +12,13 @@ The package can be installed using `Pkg.add()`
 
 ```julia
 using Pkg
-Pkg.add("https://github.com/cJarvers/FeedbackNets.jl.git")
+Pkg.add("FeedbackNets")
 ```
 
 or using the REPL shorthand
 
 ```julia
-] add https://github.com/cJarvers/FeedbackNets.jl.git
+] add FeedbackNets
 ```
 
 The package depends on `Flux`. `CuArrays` is required for GPU support.
