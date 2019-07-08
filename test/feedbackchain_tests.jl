@@ -47,5 +47,12 @@
         @test y ≈ l2(l1(h["f1"] + x))
         @test haskey(c.state, "f1")
         @test c.state["f1"] ≈ l1(h["f1"] + x)
+        # check that truncation works
+        @test Flux.Tracker.istracked(c.state["f1"])
+        Flux.truncate!(c)
+        @test !Flux.Tracker.istracked(c.state["f1"])
+        # check that reset works
+        Flux.reset!(c)
+        @test c.state["f1"] == c.init["f1"]
     end # @testset "recur"
 end # @testset "FeedbackChains"
