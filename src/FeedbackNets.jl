@@ -9,11 +9,13 @@ using Reexport
 
 include("Splitters.jl")
 include("Mergers.jl")
+include("AbstractFeedbackNets.jl")
 include("FeedbackChains.jl")
 include("FeedbackTrees.jl")
 include("ModelFactory.jl")
 @reexport using .Splitters
 @reexport using .Mergers
+@reexport using .AbstractFeedbackNets
 @reexport using .FeedbackChains
 @reexport using .FeedbackTrees
 @reexport using .ModelFactory

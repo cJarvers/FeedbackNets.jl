@@ -7,9 +7,10 @@ using MacroTools: @forward
 
 using ..Splitters
 using ..Mergers
+using ..AbstractFeedbackNets
 export FeedbackChain
 
-struct FeedbackChain{T<:Tuple}
+struct FeedbackChain{T<:Tuple} <: AbstractFeedbackNet
     layers::T
     FeedbackChain(xs...) = new{typeof(xs)}(xs)
 end

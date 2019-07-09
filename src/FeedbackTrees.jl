@@ -7,9 +7,10 @@ using MacroTools: @forward
 
 using ..Splitters
 using ..Mergers
+using ..AbstractFeedbackNets
 export FeedbackTree
 
-struct FeedbackTree{T<:Tuple}
+struct FeedbackTree{T<:Tuple} <: AbstractFeedbackNet
     layers::T
     FeedbackTree(xs...) = new{typeof(xs)}(xs)
 end

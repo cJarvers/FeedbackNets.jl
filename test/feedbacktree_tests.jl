@@ -67,4 +67,15 @@
         layers = [layer for layer in c]
         @test layers == collect(c.layers)
     end # @testset "iteration"
+
+    @testset "interface" begin
+        # test that generic method `splitname` works
+        c = FeedbackTree(
+            Splitter("name1"),
+            Merger("name2", nothing, +),
+            Splitter("name3"),
+            Dense(10,10)
+        )
+        @test splitnames(c) == ["name1", "name3"]
+    end # @testset "interface"
 end # @testset "FeedbackTrees"
