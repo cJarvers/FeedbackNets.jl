@@ -77,5 +77,11 @@
             Dense(10,10)
         )
         @test splitnames(c) == ["name1", "name3"]
+        # test that validation of naming works
+        @test !namesvalid(c) # merger name does not fit splitter names
+        c = FeedbackTree(Splitter("name1"), Merger("name1", nothing, +))
+        @test namesvalid(c)
+        c = FeedbackTree(Splitter("name1"), Splitter("name1"))
+        @test !namesvalid(c)
     end # @testset "interface"
 end # @testset "FeedbackTrees"

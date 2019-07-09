@@ -1,8 +1,9 @@
 module AbstractFeedbackNets
 
 using ..Splitters
+using ..Mergers
 
-export AbstractFeedbackNet, splitnames
+export AbstractFeedbackNet, splitnames, namesvalid
 
 """
     AbstractFeedbackNet
@@ -30,5 +31,25 @@ function splitnames(net::AbstractFeedbackNet)
     end
     return names
 end # function splitnames
+
+"""
+    namesvalid(net::AbstractFeedbackNet)
+
+Check if the input names of all `Mergers` in `net` have a corresponding `Splitter`
+and that no two `Splitter`s have the same name.
+"""
+function namesvalid(net::AbstractFeedbackNet)
+    splitters = splitnames(net)
+    # check that splitter names are unique
+    uniqueness = (length(unique(splitters)) == length(splitters))
+    # check that merger names have corresponding splitter name
+    mergers = Vector{String}()
+    for layer in net
+        if layer isa Merger
+            push!(mergers, inputname(layer))
+        end
+    end
+    all(name in splitters for name in mergers) & uniqueness
+end # function namesvalid
 
 end # module AbstractFeedbackNets
