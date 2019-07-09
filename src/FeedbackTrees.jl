@@ -2,6 +2,8 @@ module FeedbackTrees
 
 using Flux
 import Flux: children, mapchildren
+import Base: getindex
+using MacroTools: @forward
 
 using ..Splitters
 using ..Mergers
@@ -38,7 +40,14 @@ function (c::FeedbackTree)(h, x)
     return newh, x
 end # function (c::FeedbackTree)
 
+# These overloads ensure that a FeedbackTree behaves as Flux expects, e.g.,
+# when moving to gpu or collecting parameters.
 children(c::FeedbackTree) = c.layers
 mapchildren(f, c::FeedbackTree) = FeedbackTree(f.(c.layers)...)
+
+# These overloads ensure that indexing / slicing etc. work with FeedbackTrees
+@forward FeedbackTree.layers Base.getindex, Base.length, Base.first, Base.last,
+         Base.iterate, Base.lastindex
+getindex(c::FeedbackTree, i::AbstractArray) = FeedbackTree(c.layers[i]...)
 
 end # module FeedbackTrees

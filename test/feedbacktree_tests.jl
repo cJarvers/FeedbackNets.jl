@@ -55,4 +55,16 @@
         Flux.reset!(c)
         @test c.state["f1"] == c.init["f1"]
     end # @testset "recur"
+
+    @testset "indexing" begin
+        c = FeedbackTree(Dense(1,2), Dense(2,3), Dense(3,1))
+        @test c[1] == c.layers[1]
+        @test c[2:3] == FeedbackTree(c.layers[2:3]...)
+    end # @testset "indexing"
+
+    @testset "iteration" begin
+        c = FeedbackTree(Dense(1,2), Dense(2,3), Dense(3,1))
+        layers = [layer for layer in c]
+        @test layers == collect(c.layers)
+    end # @testset "iteration"
 end # @testset "FeedbackTrees"

@@ -2,6 +2,8 @@ module FeedbackChains
 
 using Flux
 import Flux: children, mapchildren
+import Base: getindex
+using MacroTools: @forward
 
 using ..Splitters
 using ..Mergers
@@ -37,7 +39,14 @@ function (c::FeedbackChain)(h, x)
     return newh, x
 end # function (c::FeedbackChain)
 
+# These overloads ensure that a FeedbackChain behaves as Flux expects, e.g.,
+# when moving to gpu or collecting parameters.
 children(c::FeedbackChain) = c.layers
 mapchildren(f, c::FeedbackChain) = FeedbackChain(f.(c.layers)...)
+
+# These overloads ensure that indexing / slicing etc. work with FeedbackChains
+@forward FeedbackChain.layers Base.getindex, Base.length, Base.first, Base.last,
+         Base.iterate, Base.lastindex
+getindex(c::FeedbackChain, i::AbstractArray) = FeedbackChain(c.layers[i]...)
 
 end # module FeedbackChains
