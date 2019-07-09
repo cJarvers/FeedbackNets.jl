@@ -28,7 +28,7 @@ struct Merger{F,O}
 end # struct Merger
 
 function (m::Merger)(x, y)
-    m.op(x, m.fb(y))
+    m.op(x, m.fb(y[m.splitname]))
 end
 
 children(m::Merger) = (m.fb, m.op)

@@ -29,9 +29,9 @@ function (c::FeedbackChain)(h, x)
     newh = Dict{String, Any}()
     for layer ∈ c.layers
         if layer isa Splitter
-            newh[layer.name] = x
+            newh[splitname(layer)] = x
         elseif layer isa Merger
-            x = layer(x, h[layer.splitname])
+            x = layer(x, h)
         else
             x = layer(x)
         end

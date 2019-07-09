@@ -29,10 +29,10 @@ function (c::FeedbackTree)(h, x)
     newh = Dict{String, Any}()
     for layer ∈ c.layers
         if layer isa Splitter
-            newh[layer.name] = x
-            x = h[layer.name]
+            newh[splitname(layer)] = x
+            x = h[splitname(layer)]
         elseif layer isa Merger
-            x = layer(x, h[layer.splitname])
+            x = layer(x, h)
         else
             x = layer(x)
         end

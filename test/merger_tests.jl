@@ -5,6 +5,7 @@
     m = Merger(splitname, fbop, combineop)
     x = randn(5)
     y = randn(5)
+    h = Dict(splitname => y)
 
     @testset "constructor" begin
         @test m isa Merger{typeof(fbop), typeof(combineop)}
@@ -14,7 +15,7 @@
     end # @testset "constructor"
 
     @testset "apply" begin
-        @test m(x, y) ≈ m.op(x, m.fb(y))
+        @test m(x, h) ≈ m.op(x, m.fb(y))
     end # @testset "apply"
 
     @testset "params" begin
