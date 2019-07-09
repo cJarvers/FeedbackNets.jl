@@ -2,7 +2,7 @@ module Mergers
 
 import Flux: children, mapchildren
 
-export Merger
+export Merger, inputname
 
 """
     Merger{F,O}
@@ -31,7 +31,16 @@ function (m::Merger)(x, y)
     m.op(x, m.fb(y[m.splitname]))
 end
 
+# These overloads ensure that a Merger behaves as Flux expects, e.g.,
+# when moving to gpu or collecting parameters.
 children(m::Merger) = (m.fb, m.op)
 mapchildren(f, m::Merger) = Merger(m.splitname, f(m.fb), m.op)
+
+"""
+    inputname(m::Merger)
+
+Return the name of the `Splitter`
+"""
+inputname(m::Merger) = m.splitname
 
 end # module Mergers
