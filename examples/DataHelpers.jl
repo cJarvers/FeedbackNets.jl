@@ -31,8 +31,10 @@ first two dimensions are the image dimensions.
     like independent images.
 """
 function standardize(imgs)
+    std_img = std(imgs, dims=(1,2))
+    std_img[std_img .== 0] .= 1
     imgs = imgs .- mean(imgs, dims=(1,2))
-    imgs = imgs ./ std(imgs, dims=(1,2))
+    imgs = imgs ./ std_img
     return imgs
 end # function normalize_images
 
