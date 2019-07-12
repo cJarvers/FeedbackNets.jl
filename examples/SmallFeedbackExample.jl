@@ -5,7 +5,7 @@ using Flux
 
 # some parameters
 batchsize = 10
-usegpu = true
+usegpu = false
 
 if usegpu
     using CuArrays
