@@ -1,6 +1,6 @@
 # This scripts shows how to train a network with feedback operations (as well as
 # a comparable forward network) on MNIST.
-usegpu = true
+usegpu = false
 
 using Base.Iterators: partition
 using Flux, Statistics
@@ -50,6 +50,9 @@ forwardnet = Chain(
     Dense(84, 10),
     softmax
 )
+if usegpu
+    forwardnet = forwardnet |> gpu
+end
 # Feedback network: the same structure as the forward network, but with feedback
 # from the output of the second convolution to before the first pooling, and
 # from the output of the first fully connected layer (here implemented as a
@@ -74,6 +77,10 @@ h = Dict(
     "conv2" => zeros(Float32, 10, 10, 16, batchsize),
     "fc1" => zeros(Float32, 1, 1, 120, batchsize)
 )
+if usegpu
+    feedbacknet = feedbacknet |> gpu
+    h = Dict(key => gpu(val) for (key, val) in pairs(h))
+end
 feedbacknet = Flux.Recur(feedbacknet, h)
 
 # Training the feedforward model works with the standard Flux workflows. We
@@ -89,7 +96,7 @@ end
 function accuracy(valset, model)
     accum = 0.0
     for (x, y) in valset
-        accum += mean([x == y for (x, y) in zip(onecold(model(x)), onecold(y))])
+        accum += mean(x == y for (x, y) in zip(onecold(model(x)), onecold(y)))
     end
     accum = accum / length(valset)
 end
