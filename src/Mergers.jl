@@ -1,6 +1,7 @@
 module Mergers
 
 import Flux: children, mapchildren
+import Base: show
 
 export Merger, inputname
 
@@ -43,4 +44,7 @@ Return the name of the `Splitter`
 """
 inputname(m::Merger) = m.splitname
 
+function show(io::IO, m::Merger)
+    print(io, "Merger(\"", m.splitname, "\", ", m.fb, ", ", m.op, ")")
+end # function show
 end # module Mergers

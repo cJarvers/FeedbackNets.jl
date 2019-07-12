@@ -2,7 +2,7 @@ module FeedbackChains
 
 using Flux
 import Flux: children, mapchildren
-import Base: getindex
+import Base: getindex, show
 using MacroTools: @forward
 
 using ..Splitters
@@ -50,4 +50,9 @@ mapchildren(f, c::FeedbackChain) = FeedbackChain(f.(c.layers)...)
          Base.iterate, Base.lastindex
 getindex(c::FeedbackChain, i::AbstractArray) = FeedbackChain(c.layers[i]...)
 
+function show(io::IO, c::FeedbackChain)
+    print(io, "FeedbackChain(")
+    join(io, c.layers, ", ")
+    print(io, ")")
+end # function show
 end # module FeedbackChains

@@ -2,7 +2,7 @@ module FeedbackTrees
 
 using Flux
 import Flux: children, mapchildren
-import Base: getindex
+import Base: getindex, show
 using MacroTools: @forward
 
 using ..Splitters
@@ -51,4 +51,9 @@ mapchildren(f, c::FeedbackTree) = FeedbackTree(f.(c.layers)...)
          Base.iterate, Base.lastindex
 getindex(c::FeedbackTree, i::AbstractArray) = FeedbackTree(c.layers[i]...)
 
+function show(io::IO, c::FeedbackTree)
+    print(io, "FeedbackTree(")
+    join(io, c.layers, ", ")
+    print(io, ")")
+end # function show
 end # module FeedbackTrees
