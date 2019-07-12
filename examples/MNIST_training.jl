@@ -1,6 +1,6 @@
 # This scripts shows how to train a network with feedback operations (as well as
 # a comparable forward network) on MNIST.
-usegpu = false
+usegpu = true
 
 using Base.Iterators: partition
 using Flux, Statistics
@@ -17,7 +17,7 @@ using .DataHelpers
 
 # load MNIST
 @info("Preparing data ...")
-batchsize=128
+batchsize=200
 images, labels = MNIST.traindata()
 images = DataHelpers.standardize(Float32.(images))
 trainimgs, trainlbls = DataHelpers.makebatches(images[:, :, 1:55000], labels[1:55000], batchsize=batchsize)
@@ -76,31 +76,51 @@ h = Dict(
 )
 feedbacknet = Flux.Recur(feedbacknet, h)
 
+# Training the feedforward model works with the standard Flux workflows. We
+# generate a loss function using the pre-implemented crossentropy, ...
 function loss(x, y, model)
     error = crossentropy(model(x), y)
+    # This reset is necessary for the feedback network later. The way Flux Recur
+    # handles recurrency requires a reset after each loss calculation.
     Flux.reset!(model)
     return(error)
 end
-
-function accuracy(x, y, model)
-    mean([x == y for (x, y) in zip(onecold(model(x)), onecold(y))])
+# ... and an accuracy function to monitor our learning progress.
+function accuracy(valset, model)
+    accum = 0.0
+    for (x, y) in valset
+        accum += mean([x == y for (x, y) in zip(onecold(model(x)), onecold(y))])
+    end
+    accum = accum / length(valset)
 end
-
+# We also wrap training in a function, as executing the for-loop etc. in script
+# mode may be slow.
 function trainmodel(model, trainset, valset; epochs=1, opt=Nesterov(0.0001),
-                    verbose=false, loss=loss, accuracy=accuracy)
+                    verbose=true, loss=loss, accuracy=accuracy)
     # training loop
-    verbose ? @info("initial accuracy: $(accuracy(valset..., model))") : nothing
+    verbose ? @info("initial accuracy: $(accuracy(valset, model))") : nothing
     for e in 1:epochs
         Flux.train!((x, y) -> loss(x, y, model), params(model), trainset, opt)
-        verbose ? @info("accuracy after episode $e: $(accuracy(valset..., model))") : nothing
+        verbose ? @info("accuracy after episode $e: $(accuracy(valset, model))") : nothing
     end
 end
-
-# do the actual training
+# Now we can do the actual training.
 @info("Training forward network ...")
 trainmodel(forwardnet, zip(trainimgs, trainlbls), zip(valimgs, vallbls))
 @save "forward_MNIST.bson"
 
+# Training the feedback network involves one additional complication: we need to
+# unroll the network over time. If we work with sequence data, this amounts to
+# broadcasting our model over the sequence. Since we are using MNIST digits here
+# we first need to replicate them over timesteps.
+#
+# This helper function takes care of this replication and calculates the loss.
+function lossunroll(x, y, model; steps=4)
+    error = sum(crossentropy(model(x) .+ eps(Float32), y) for i in 1:steps)
+    Flux.reset!(model)
+    return error
+end
+
 @info("Training feedback network ...")
-trainmodel(feedbacknet, zip(trainimgs, trainlbls), zip(valimgs, vallbls))
+trainmodel(feedbacknet, zip(trainimgs, trainlbls), zip(valimgs, vallbls), loss=lossunroll)
 @save "feedback_MNIST.bson"
