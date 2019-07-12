@@ -127,7 +127,19 @@ function lossunroll(x, y, model; steps=4)
     Flux.reset!(model)
     return error
 end
+# Similarly, we need to unroll for several steps to calculate the accuracy. We
+# will compare the last prediction of the network to the ground truth.
+function accuracyunroll(valset, model; steps=4)
+    accum = 0.0
+    for (x, y) in valset
+        prediction = model.(x for i in 1:steps)[end]
+        Flux.reset!(model)
+        accum += mean(x == y for (x, y) in zip(onecold(prediction), onecold(y)))
+    end
+    accum = accum / length(valset)
+end
 
 @info("Training feedback network ...")
-trainmodel(feedbacknet, zip(trainimgs, trainlbls), zip(valimgs, vallbls), loss=lossunroll)
+trainmodel(feedbacknet, zip(trainimgs, trainlbls), zip(valimgs, vallbls),
+           loss=lossunroll, accuracy=accuracyunroll)
 @save "feedback_MNIST.bson"
