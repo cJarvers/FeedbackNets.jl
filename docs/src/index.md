@@ -10,5 +10,9 @@ connections from higher/later layers in the networks to lower/earlier layers.
 ## Contents
 
 ```@contents
-Pages = ["guide/getting_started.md", "guide/chains_vs_trees.md"]
+Pages = [
+    "guide/getting_started.md",
+    "guide/chains_vs_trees.md",
+    "guide/working_with_networks.md"
+]
 ```
