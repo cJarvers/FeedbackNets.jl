@@ -2,12 +2,15 @@ module FeedbackChains
 
 using Flux
 import Flux: children, mapchildren
+import Base: getindex, show
+using MacroTools: @forward
 
 using ..Splitters
 using ..Mergers
+using ..AbstractFeedbackNets
 export FeedbackChain
 
-struct FeedbackChain{T<:Tuple}
+struct FeedbackChain{T<:Tuple} <: AbstractFeedbackNet
     layers::T
     FeedbackChain(xs...) = new{typeof(xs)}(xs)
 end
@@ -27,9 +30,9 @@ function (c::FeedbackChain)(h, x)
     newh = Dict{String, Any}()
     for layer ∈ c.layers
         if layer isa Splitter
-            newh[layer.name] = x
+            newh[splitname(layer)] = x
         elseif layer isa Merger
-            x = layer(x, h[layer.splitname])
+            x = layer(x, h)
         else
             x = layer(x)
         end
@@ -37,7 +40,19 @@ function (c::FeedbackChain)(h, x)
     return newh, x
 end # function (c::FeedbackChain)
 
+# These overloads ensure that a FeedbackChain behaves as Flux expects, e.g.,
+# when moving to gpu or collecting parameters.
 children(c::FeedbackChain) = c.layers
 mapchildren(f, c::FeedbackChain) = FeedbackChain(f.(c.layers)...)
 
+# These overloads ensure that indexing / slicing etc. work with FeedbackChains
+@forward FeedbackChain.layers Base.getindex, Base.length, Base.first, Base.last,
+         Base.iterate, Base.lastindex
+getindex(c::FeedbackChain, i::AbstractArray) = FeedbackChain(c.layers[i]...)
+
+function show(io::IO, c::FeedbackChain)
+    print(io, "FeedbackChain(")
+    join(io, c.layers, ", ")
+    print(io, ")")
+end # function show
 end # module FeedbackChains

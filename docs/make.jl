@@ -1,14 +1,16 @@
-using Documenter#, FeedbackConvNets
+using Documenter, FeedbackNets, Flux
 
 makedocs(
-    sitename = "FeedbackConvNets Documentation",
-    #modules = [FeedbackConvNets],
+    sitename = "FeedbackNets Documentation",
+    modules = [FeedbackNets, Flux],
     pages = [
         "Home" => "index.md"
         "Guide" => [
             "Getting Started" => "guide/getting_started.md",
-            "Chains vs Trees" => "guide/chains_vs_trees.md"
+            "Chains vs Trees" => "guide/chains_vs_trees.md",
+            "Working with Networks" => "guide/working_with_networks.md"
         ]
+        "Reference" => "reference.md"
     ]
 )
 

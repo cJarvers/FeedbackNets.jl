@@ -2,12 +2,15 @@ module FeedbackTrees
 
 using Flux
 import Flux: children, mapchildren
+import Base: getindex, show
+using MacroTools: @forward
 
 using ..Splitters
 using ..Mergers
+using ..AbstractFeedbackNets
 export FeedbackTree
 
-struct FeedbackTree{T<:Tuple}
+struct FeedbackTree{T<:Tuple} <: AbstractFeedbackNet
     layers::T
     FeedbackTree(xs...) = new{typeof(xs)}(xs)
 end
@@ -27,10 +30,10 @@ function (c::FeedbackTree)(h, x)
     newh = Dict{String, Any}()
     for layer ∈ c.layers
         if layer isa Splitter
-            newh[layer.name] = x
-            x = h[layer.name]
+            newh[splitname(layer)] = x
+            x = h[splitname(layer)]
         elseif layer isa Merger
-            x = layer(x, h[layer.splitname])
+            x = layer(x, h)
         else
             x = layer(x)
         end
@@ -38,7 +41,19 @@ function (c::FeedbackTree)(h, x)
     return newh, x
 end # function (c::FeedbackTree)
 
+# These overloads ensure that a FeedbackTree behaves as Flux expects, e.g.,
+# when moving to gpu or collecting parameters.
 children(c::FeedbackTree) = c.layers
 mapchildren(f, c::FeedbackTree) = FeedbackTree(f.(c.layers)...)
 
+# These overloads ensure that indexing / slicing etc. work with FeedbackTrees
+@forward FeedbackTree.layers Base.getindex, Base.length, Base.first, Base.last,
+         Base.iterate, Base.lastindex
+getindex(c::FeedbackTree, i::AbstractArray) = FeedbackTree(c.layers[i]...)
+
+function show(io::IO, c::FeedbackTree)
+    print(io, "FeedbackTree(")
+    join(io, c.layers, ", ")
+    print(io, ")")
+end # function show
 end # module FeedbackTrees

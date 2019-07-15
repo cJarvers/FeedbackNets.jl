@@ -47,5 +47,41 @@
         @test y ≈ l2(h["f1"])
         @test haskey(c.state, "f1")
         @test c.state["f1"] ≈ l1(h["f1"] + x)
+        # check that truncation works
+        @test Flux.Tracker.istracked(c.state["f1"])
+        Flux.truncate!(c)
+        @test !Flux.Tracker.istracked(c.state["f1"])
+        # check that reset works
+        Flux.reset!(c)
+        @test c.state["f1"] == c.init["f1"]
     end # @testset "recur"
+
+    @testset "indexing" begin
+        c = FeedbackTree(Dense(1,2), Dense(2,3), Dense(3,1))
+        @test c[1] == c.layers[1]
+        @test c[2:3] == FeedbackTree(c.layers[2:3]...)
+    end # @testset "indexing"
+
+    @testset "iteration" begin
+        c = FeedbackTree(Dense(1,2), Dense(2,3), Dense(3,1))
+        layers = [layer for layer in c]
+        @test layers == collect(c.layers)
+    end # @testset "iteration"
+
+    @testset "interface" begin
+        # test that generic method `splitname` works
+        c = FeedbackTree(
+            Splitter("name1"),
+            Merger("name2", nothing, +),
+            Splitter("name3"),
+            Dense(10,10)
+        )
+        @test splitnames(c) == ["name1", "name3"]
+        # test that validation of naming works
+        @test !namesvalid(c) # merger name does not fit splitter names
+        c = FeedbackTree(Splitter("name1"), Merger("name1", nothing, +))
+        @test namesvalid(c)
+        c = FeedbackTree(Splitter("name1"), Splitter("name1"))
+        @test !namesvalid(c)
+    end # @testset "interface"
 end # @testset "FeedbackTrees"
