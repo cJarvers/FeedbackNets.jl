@@ -3,6 +3,8 @@ module Mergers
 import Flux: children, mapchildren
 import Base: show
 
+using ..AbstractMergers
+
 export Merger, inputname
 
 """
@@ -22,7 +24,7 @@ encounters a `Merger`, it will look up the state `s` of the `Splitter` given by 
 from the previous timestep, apply `fb` to it and combine it with the forward input `x`
 according  to `op(x, fb(s))`
 """
-struct Merger{F,O}
+struct Merger{F,O} <: AbstractMerger
     splitname::String
     fb::F
     op::O
