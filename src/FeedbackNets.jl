@@ -13,7 +13,7 @@ include("Mergers.jl")
 include("AbstractFeedbackNets.jl")
 include("FeedbackChains.jl")
 include("FeedbackTrees.jl")
-include("ModelFactory.jl")
+include("modelfactory/ModelFactory.jl")
 @reexport using .Splitters
 @reexport using .AbstractMergers
 @reexport using .Mergers
