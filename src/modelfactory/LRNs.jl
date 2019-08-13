@@ -45,4 +45,8 @@ end # function (l::LRN)
 
 Flux.@treelike LRN
 
+# convenience constructor with default arguments
+function LRN(; b=1.0, α=1.0, β=0.5, k=5)
+    return LRN(b, α, β, k)
+end # function LRN
 end # module LRNs
