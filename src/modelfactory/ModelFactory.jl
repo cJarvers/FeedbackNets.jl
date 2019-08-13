@@ -13,6 +13,9 @@ include("Flatten.jl")
 include("LRNs.jl")
 @reexport using .LRNs
 
+include("LeNet5.jl")
+@reexport using .LeNet5
+
 include("Spoerer2017.jl")
 @reexport using .Spoerer2017
 
