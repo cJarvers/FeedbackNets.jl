@@ -52,11 +52,11 @@ using Flux
 ```
 
 The core of the package is the `FeedbackChain`, a type that behaves largely
-similar to a normal `Flux.Chain` (with some restrictions, for example, it does
-not support slicing). It treats normal Flux layers as one would expect. However,
-it can contain two additional elements: `Splitter`s and `Merger`s. These two types
-are used to structure feedback in a network, i.e., to enable higher levels of
-the chain to provide input to lower levels in the next timestep.
+similar to a normal `Flux.Chain`. It treats normal Flux layers as one would
+expect. However, it can contain two additional elements: `Splitter`s and
+`Merger`s. These two types are used to structure feedback in a network, i.e., to
+enable higher levels of the chain to provide input to lower levels in the next
+timestep.
 
 A `Splitter` marks a point in the forward stream from which feedback is provided.
 As the `FeedbackChain` traverses the feedforward stream, it records the

@@ -1,9 +1,9 @@
 """
 This module reimplements models from the paper:
 
-Spoerer, C.J., McClure, P. and Kriegeskorte, N. (2017).
-Recurrent convolutional neural networks: a better model of biological object recognition.
-Frontiers in Psychology 8, 1551.
+    Spoerer, C.J., McClure, P. and Kriegeskorte, N. (2017).
+    Recurrent convolutional neural networks: a better model of biological object recognition.
+    Frontiers in Psychology 8, 1551.
 """
 module Spoerer2017
 using Flux
@@ -13,16 +13,17 @@ using ...FeedbackChains
 using ..LRNs
 using ..Flatten
 
-export spoerer_model_fw, spoerer_model_b, spoerer_model_bf, spoerer_model_bk,
+export spoerer_model_b, spoerer_model_bf, spoerer_model_bk,
        spoerer_model_bl, spoerer_model_bt, spoerer_model_blt
 
 """
     spoerer_model_fw(T; channels=1, inputsize=(28, 28), kernel=(3,3), features=32, classes=10)
 
 Generate one of the forward models (B, B-K, B-F) from the paper:
-  Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
-  Recurrent convolutional neural networks: a better model of biological object recognition.
-  Frontiers in Psychology 8, 1551.
+
+    Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
+    Recurrent convolutional neural networks: a better model of biological object recognition.
+    Frontiers in Psychology 8, 1551.
 """
 function spoerer_model_fw(T; channels=1, inputsize=(28, 28), kernel=(3,3), features=32, classes=10)
     return Chain(
@@ -37,12 +38,39 @@ function spoerer_model_fw(T; channels=1, inputsize=(28, 28), kernel=(3,3), featu
     )
 end # function spoerer_model_fw
 
+"""
+    spoerer_model_b(T; channels=1, inputsize=(28, 28), classes=10)
+
+Generate the bottom-up (B) convolutional neural network from:
+
+    Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
+    Recurrent convolutional neural networks: a better model of biological object recognition.
+    Frontiers in Psychology 8, 1551.
+"""
 spoerer_model_b(T; channels=1, inputsize=(28,28), classes=10) =
     spoerer_model_fw(T, channels=channels, inputsize=inputsize, classes=classes)
 
+"""
+    spoerer_model_bk(T; channels=1, inputsize=(28, 28), classes=10)
+
+Generate the convolutional neural network with increased kernel size (BK) from:
+
+    Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
+    Recurrent convolutional neural networks: a better model of biological object recognition.
+    Frontiers in Psychology 8, 1551.
+"""
 spoerer_model_bk(T; channels=1, inputsize=(28,28), classes=10) =
     spoerer_model_fw(T, channels=channels, inputsize=inputsize, classes=classes, kernel=(5,5))
 
+"""
+    spoerer_model_bf(T; channels=1, inputsize=(28, 28), classes=10)
+
+Generate the convolutional neural network with additional feature maps (BF) from:
+
+    Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
+    Recurrent convolutional neural networks: a better model of biological object recognition.
+    Frontiers in Psychology 8, 1551.
+"""
 spoerer_model_bf(T; channels=1, inputsize=(28,28), classes=10) =
     spoerer_model_fw(T, channels=channels, inputsize=inputsize, classes=classes, features=64)
 
@@ -53,9 +81,10 @@ spoerer_model_bf(T; channels=1, inputsize=(28,28), classes=10) =
     spoerer_model_bl(T; channels=1, inputsize=(28, 28), kernel=(3,3), features=32, classes=10)
 
 Generate the convolutional neural network with lateral recurrence (BL) from:
-  Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
-  Recurrent convolutional neural networks: a better model of biological object recognition.
-  Frontiers in Psychology 8, 1551.
+
+    Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
+    Recurrent convolutional neural networks: a better model of biological object recognition.
+    Frontiers in Psychology 8, 1551.
 """
 function spoerer_model_bl(T; channels=1, inputsize=(28, 28), kernel=(3,3), features=32, classes=10)
     return FeedbackChain(
@@ -80,9 +109,10 @@ end # function spoerer_model_bl
     spoerer_model_bt(T; channels=1, inputsize=(28, 28), kernel=(3,3), features=32, classes=10)
 
 Generate the convolutional neural network with top-down recurrence (BT) from:
-  Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
-  Recurrent convolutional neural networks: a better model of biological object recognition.
-  Frontiers in Psychology 8, 1551.
+
+    Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
+    Recurrent convolutional neural networks: a better model of biological object recognition.
+    Frontiers in Psychology 8, 1551.
 """
 function spoerer_model_bt(T; channels=1, inputsize=(28, 28), kernel=(3,3), features=32, classes=10)
     return FeedbackChain(
@@ -104,9 +134,10 @@ end # function spoerer_model_bt
     spoerer_model_blt(T; channels=1, inputsize=(28, 28), kernel=(3,3), features=32, classes=10)
 
 Generate the convolutional neural network with lateral and top-down recurrence (BLT) from:
-  Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
-  Recurrent convolutional neural networks: a better model of biological object recognition.
-  Frontiers in Psychology 8, 1551.
+
+    Spoerer, C.J., McClure, P. & Kriegeskorte, N. (2017).
+    Recurrent convolutional neural networks: a better model of biological object recognition.
+    Frontiers in Psychology 8, 1551.
 """
 function spoerer_model_blt(T; channels=1, inputsize=(28, 28), kernel=(3,3), features=32, classes=10)
     return FeedbackChain(

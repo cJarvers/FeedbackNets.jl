@@ -34,11 +34,7 @@ care.
 
 In order to test whether all inputs required by `Merger`s in a network are
 actually provided by corresponding `Splitter`s, you can use the function
-`namesvalid`.
-
-```@docs
-namesvalid(net::AbstractFeedbackNet)
-```
+[`namesvalid`](@ref).
 
 If each `Splitter` has a unique name and each `Merger` name corresponds to a
 `Splitter`, validation will succeed.

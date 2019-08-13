@@ -42,7 +42,7 @@ mapchildren(f, m::Merger) = Merger(m.splitname, f(m.fb), m.op)
 """
     inputname(m::Merger)
 
-Return the name of the `Splitter`
+Return the name of the `Splitter` from which `m` gets its input.
 """
 inputname(m::Merger) = m.splitname
 

@@ -10,6 +10,11 @@ using ..AbstractMergers
 using ..AbstractFeedbackNets
 export FeedbackChain
 
+"""
+    FeedbackChain{T<:Tuple}
+
+Tuple-like structure similar to a Flux.Chain with support for `Splitter`s and `Merger`s.
+"""
 struct FeedbackChain{T<:Tuple} <: AbstractFeedbackNet
     layers::T
     FeedbackChain(xs...) = new{typeof(xs)}(xs)
