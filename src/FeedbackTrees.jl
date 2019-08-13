@@ -6,7 +6,7 @@ import Base: getindex, show
 using MacroTools: @forward
 
 using ..Splitters
-using ..Mergers
+using ..AbstractMergers
 using ..AbstractFeedbackNets
 export FeedbackTree
 
@@ -32,7 +32,7 @@ function (c::FeedbackTree)(h, x)
         if layer isa Splitter
             newh[splitname(layer)] = x
             x = h[splitname(layer)]
-        elseif layer isa Merger
+        elseif layer isa AbstractMerger
             x = layer(x, h)
         else
             x = layer(x)
