@@ -2,12 +2,16 @@
 # a comparable forward network) on MNIST.
 usegpu = false
 
+using Pkg
+Pkg.activate("..")
 using Base.Iterators: partition
 using Flux, Statistics
 using Flux: onehotbatch, onecold, crossentropy
+using FeedbackNets
+
+Pkg.activate(".")
 using MLDatasets
 using BSON: @save
-using FeedbackNets
 if usegpu
     using CuArrays
 end

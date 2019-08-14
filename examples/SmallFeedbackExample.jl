@@ -1,5 +1,7 @@
 # This script is a minimal example of how to use a `FeedbackChain` to build a
 # convolutional network with feedback operations and to apply it to data.
+using Pkg
+Pkg.activate("..")
 using FeedbackNets
 using Flux
 

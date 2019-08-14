@@ -4,10 +4,7 @@ authors = ["Christian Jarvers <christian.jarvers@uni-ulm.de>"]
 version = "0.2.0"
 
 [deps]
-BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
-MLDatasets = "eb30cadb-4394-5ae3-aed4-317e484a6458"
 MacroTools = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 
