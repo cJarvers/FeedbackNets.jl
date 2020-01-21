@@ -1,9 +1,6 @@
 module AbstractMergers
 
-import Flux: children, mapchildren
-import Base: show
-
-export AbstractMerger, inputname
+export AbstractMerger
 
 """
     AbstractMerger

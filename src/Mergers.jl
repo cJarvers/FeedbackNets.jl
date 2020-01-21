@@ -1,6 +1,6 @@
 module Mergers
 
-import Flux: children, mapchildren
+using Flux
 import Base: show
 
 using ..AbstractMergers
@@ -36,8 +36,9 @@ end
 
 # These overloads ensure that a Merger behaves as Flux expects, e.g.,
 # when moving to gpu or collecting parameters.
-children(m::Merger) = (m.fb, m.op)
-mapchildren(f, m::Merger) = Merger(m.splitname, f(m.fb), m.op)
+Flux.@functor Merger
+#children(m::Merger) = (m.fb, m.op)
+#mapchildren(f, m::Merger) = Merger(m.splitname, f(m.fb), m.op)
 
 """
     inputname(m::Merger)

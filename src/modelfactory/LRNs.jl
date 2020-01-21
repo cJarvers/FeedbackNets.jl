@@ -37,7 +37,7 @@ function (l::LRN)(x)
     for i ∈ 1:fsize
         f_min = max(1, i - depth)
         f_max = min(fsize, i + depth)
-        buffer = Flux.Tracker.data(x[:, :, f_min:f_max, :])
+        buffer = x[:, :, f_min:f_max, :]
         ω[:, :, i, :] = sum(buffer.^2, dims=3)
     end
     return x ./ sqrt.(l.b .+ l.α .* ω)

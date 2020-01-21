@@ -26,14 +26,6 @@
         @test hcat(params(m)...) == hcat(params(fb)..., params(op)...)
     end # @testset "params"
 
-    @testset "children" begin
-        @test Flux.children(m) == (m.fb, m.op)
-        m2 = Flux.mapchildren(x -> nothing, m)
-        @test m2.splitname == m.splitname
-        @test m2.fb == nothing
-        @test m2.op == m.op
-    end # @testset "children"
-
     @testset "name" begin
         @test inputname(m) == splitname
     end # @testset "name"
