@@ -29,17 +29,19 @@ struct LRN{T,I,A}
     size::Tuple{I, I}
     depth::I
     kernel::A
-    function LRN(c::T, α::T, β::T, size::Tuple{I, I}, depth::I, features::I) where {T, I}
-        # using convolution to do the sum, like https://github.com/FluxML/Flux.jl/pull/720
-        # create kernel:
-        kernel = zeros(T, size[1], size[2], features, features)
-        for i in 1:features
-            lower = max(i-depth÷2, 1)
-            upper = min(i+depth÷2, features)
-            kernel[:, :, lower:upper, i] .= 1
-        end
-        new{T, I, typeof(kernel)}(c, α, β, size, depth, kernel)
+end
+
+# convenience constructor that generates the appropriate summation kernel
+function LRN(c::T, α::T, β::T, size::Tuple{I, I}, depth::I, features::I) where {T, I}
+    # using convolution to do the sum, like https://github.com/FluxML/Flux.jl/pull/720
+    # create kernel:
+    kernel = zeros(T, size[1], size[2], features, features)
+    for i in 1:features
+        lower = max(i-depth÷2, 1)
+        upper = min(i+depth÷2, features)
+        kernel[:, :, lower:upper, i] .= 1
     end
+    LRN{T, I, typeof(kernel)}(c, α, β, size, depth, kernel)
 end
 
 # convenience constructor with default arguments
