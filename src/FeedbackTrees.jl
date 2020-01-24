@@ -1,6 +1,7 @@
 module FeedbackTrees
 
 using Flux
+import Flux: functor
 import Base: getindex, show
 using MacroTools: @forward
 
@@ -42,7 +43,7 @@ end # function (c::FeedbackTree)
 
 # These overloads ensure that a FeedbackTree behaves as Flux expects, e.g.,
 # when moving to gpu or collecting parameters.
-Flux.@functor FeedbackTree
+functor(f::FeedbackTree) = f.layers, ls -> FeedbackTree(ls...)
 #children(c::FeedbackTree) = c.layers
 #mapchildren(f, c::FeedbackTree) = FeedbackTree(f.(c.layers)...)
 

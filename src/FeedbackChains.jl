@@ -1,6 +1,7 @@
 module FeedbackChains
 
 using Flux
+import Flux: functor
 import Base: getindex, show
 using MacroTools: @forward
 
@@ -46,7 +47,7 @@ end # function (c::FeedbackChain)
 
 # These overloads ensure that a FeedbackChain behaves as Flux expects, e.g.,
 # when moving to gpu or collecting parameters.
-Flux.@functor FeedbackChain
+functor(f::FeedbackChain) = f.layers, ls -> FeedbackChain(ls...)
 #children(c::FeedbackChain) = c.layers
 #mapchildren(f, c::FeedbackChain) = FeedbackChain(f.(c.layers)...)
 
