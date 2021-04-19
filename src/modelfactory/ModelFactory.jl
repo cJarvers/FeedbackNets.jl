@@ -7,9 +7,6 @@ used in evaluations and examples.
 module ModelFactory
 using Reexport
 
-include("Flatten.jl")
-@reexport using .Flatten
-
 include("LRNs.jl")
 @reexport using .LRNs
 

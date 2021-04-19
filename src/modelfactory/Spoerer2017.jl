@@ -11,7 +11,6 @@ using ...Splitters
 using ...Mergers
 using ...FeedbackChains
 using ..LRNs
-using ..Flatten
 
 export spoerer_model_b, spoerer_model_bf, spoerer_model_bk,
        spoerer_model_bl, spoerer_model_bt, spoerer_model_blt
