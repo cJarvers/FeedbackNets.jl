@@ -9,6 +9,7 @@ and a version of LeNet5 with feedback connections.
 """
 module LeNet5
 using Flux
+using ...StateFulls
 using ...Splitters
 using ...Mergers
 using ...FeedbackChains
@@ -78,7 +79,7 @@ function wrapfb_lenet5(net, batchsize; generator=zeros)
         "conv2" => generator(10, 10, 16, batchsize),
         "fc1" => generator(1, 1, 120, batchsize)
     )
-    return Flux.Recur(net, h)
+    return StateFull(net, h)
 end # function wrapfb_lenet5
 
 end # module LeNet5

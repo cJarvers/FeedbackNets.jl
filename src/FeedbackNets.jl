@@ -7,6 +7,7 @@ Uses Flux as a backend.
 module FeedbackNets
 using Reexport
 
+include("StateFulls.jl")
 include("Splitters.jl")
 include("AbstractMergers.jl")
 include("Mergers.jl")
@@ -14,6 +15,7 @@ include("AbstractFeedbackNets.jl")
 include("FeedbackChains.jl")
 include("FeedbackTrees.jl")
 include("modelfactory/ModelFactory.jl")
+@reexport using .StateFulls
 @reexport using .Splitters
 @reexport using .AbstractMergers
 @reexport using .Mergers

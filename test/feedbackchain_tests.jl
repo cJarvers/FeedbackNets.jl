@@ -36,13 +36,13 @@
         @test hcat(params(c)...) == hcat(params(l1)..., params(l2)...)
     end # @testset "params"
 
-    @testset "recur" begin
+    @testset "statefull" begin
         h = Dict("f1"=>randn(10))
         x = randn(10)
         l1 = Dense(10, 10, relu)
         l2 = Dense(10, 1)
         c = FeedbackChain(Merger("f1", identity, +), l1, Splitter("f1"), l2)
-        c = Flux.Recur(c, h)
+        c = StateFull(c, h)
         y = c(x)
         @test y ≈ l2(l1(h["f1"] + x))
         @test haskey(c.state, "f1")
@@ -56,7 +56,7 @@
         # check that reset works
         Flux.reset!(c)
         @test c.state["f1"] == c.init["f1"]
-    end # @testset "recur"
+    end # @testset "statefull"
 
     @testset "indexing" begin
         c = FeedbackChain(Dense(1,2), Dense(2,3), Dense(3,1))
