@@ -8,6 +8,8 @@ julia:
     - 1.6
     - nightly
 
+coveralls: true
+
 matrix:
   allow_failures:
     - julia: nightly
@@ -18,13 +20,13 @@ jobs:
       julia: 1.6
       os: linux
       script:
-        - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd()));
+        - julia --color=yes --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd()));
                                                Pkg.instantiate()'
-        - julia --project=docs/ docs/make.jl
+        - julia --color=yes --project=docs/ docs/make.jl
       after_success: skip
 
 script:
-  - julia --color=yes -e 'using Pkg; Pkg.activate(); Pkg.instantiate(); Pkg.test("FeedbackNets"; coverage=true)'
+  - julia --project --color=yes -e 'using Pkg; Pkg.build(; verbose=true); Pkg.test("FeedbackNets"; coverage=true)'
 
 after_success:
-  - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+  - julia --project -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
